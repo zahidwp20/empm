@@ -22,13 +22,13 @@ include 'header.php';
                 <div class="position-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.php">
+                            <a class="nav-link" aria-current="page" href="index.php">
                                 <span data-feather="home"></span>
                                 Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="users.php">
+                            <a class="nav-link active" href="users.php">
                                 <span data-feather="users"></span>
                                 <span>Users</span>
                             </a>
@@ -51,7 +51,7 @@ include 'header.php';
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Dashboard</h1>
+                    <h1 class="h2">Users</h1>
                 </div>
 
 

@@ -8,15 +8,24 @@ include './inc/functions.php';
 
 
 // Login check
-$user_logged_in = isset($_COOKIE['user_logged_in']) ? $_COOKIE['user_logged_in'] : '';
 $curr_script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
-$exclude_pages = array('/login.php', '/register.php');
+$curr_script_name = explode('/', $curr_script_name);
+$exclude_pages = array('login.php', 'register.php');
 
-
-if (empty($user_logged_in) && !in_array($curr_script_name, $exclude_pages)) {
+if (empty(empm_current_user_id()) && !in_array(end($curr_script_name), $exclude_pages)) {
     header('Location: login.php');
 }
 
+
+// Sign out handling
+if (empm_get_var('logout', $_GET) === 'true') {
+
+    // Remove cookie data
+    setcookie('user_logged_in', '');
+
+    // Redirect to login page
+    header('Location: login.php');
+}
 
 ?>
 <!doctype html>

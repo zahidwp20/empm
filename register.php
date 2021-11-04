@@ -35,6 +35,10 @@ if ($form_submission === 'yes') :
 
 endif;
 
+// Check if user already logged in
+if (empm_current_user_id()) {
+    header('Location: index.php');
+}
 
 ?>
 
