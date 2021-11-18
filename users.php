@@ -1,8 +1,8 @@
 <?php
 
 include 'header.php';
-?>
 
+?>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Employee Management Application</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,12 +48,50 @@ include 'header.php';
                     </ul>
                 </div>
             </nav>
-
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Users</h1>
                 </div>
 
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#ID</th>
+                        <th scope="col">Full Name</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email Address</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach (empm_get_users() as $user) : $user_id = empm_get_var('id', $user); ?>
+
+                        <tr>
+                            <td><?php echo $user_id; ?></td>
+                            <td><?php echo empm_get_var('first_name', $user) . empm_get_var('last_name', $user); ?></td>
+                            <td><?php echo empm_get_var('user_name', $user); ?></td>
+                            <td><?php echo empm_get_var('email_address', $user); ?></td>
+                            <td><?php echo ucwords(empm_get_var('user_role', $user)); ?></td>
+                            <td><?php echo ucwords(empm_get_var('status', $user)); ?></td>
+                            <td>
+                                <a href="" class="btn btn-primary btn-sm">View</a>
+
+                                <?php if ($user_id != empm_current_user_id()) : ?>
+                                    <a href="" class="btn btn-success btn-sm">Activate</a>
+                                <?php endif; ?>
+
+                                <a href="" class="btn btn-secondary btn-sm">Edit</a>
+
+                                <?php if ($user_id != empm_current_user_id()) : ?>
+                                    <a href="" class="btn btn-danger btn-sm">Delete</a>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
 
             </main>
         </div>

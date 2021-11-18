@@ -3,8 +3,8 @@
  * Header Template
  */
 
-include './inc/conn.php';
 include './inc/functions.php';
+include './inc/conn.php';
 
 
 // Login check

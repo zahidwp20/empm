@@ -36,9 +36,8 @@ if (!function_exists('empm_user_registration')) {
     function empm_user_registration($un, $email, $pw)
     {
         $conn = empm_get_var('conn');
-        $table = empm_get_var('db_tbl_users');
         $password = md5($pw);
-        $sql = "INSERT INTO $table (user_name, email_address, password) VALUES ('$un', '$email', '$password')";
+        $sql = "INSERT INTO " . EMPM_TBL_USERS . " (user_name, email_address, password) VALUES ('$un', '$email', '$password')";
 
         if (!$conn->query($sql)) {
             return $conn->error;
@@ -60,8 +59,7 @@ if (!function_exists('empm_check_user_login')) {
     {
         $pw = md5($pw);
         $conn = empm_get_var('conn');
-        $table = empm_get_var('db_tbl_users');
-        $sql = "SELECT (id) FROM $table WHERE `user_name` = '$un' AND `password` = '$pw' LIMIT 1";
+        $sql = "SELECT (id) FROM " . EMPM_TBL_USERS . " WHERE `user_name` = '$un' AND `password` = '$pw' AND `status` = 'active' LIMIT 1";
 
         if (!$result = $conn->query($sql)) {
             return false;
@@ -88,3 +86,53 @@ if (!function_exists('empm_current_user_id')) {
         return empm_get_var('user_logged_in', $_COOKIE);
     }
 }
+
+if (!function_exists('empm_get_user')) {
+    /**
+     * Return User data from username
+     *
+     * @param $username
+     * @return false
+     */
+    function empm_get_user($username)
+    {
+
+        $conn = empm_get_var('conn');
+        $sql = "SELECT * FROM " . EMPM_TBL_USERS . " WHERE `user_name` = '$username' LIMIT 1";
+
+        if (!$result = $conn->query($sql)) {
+            return false;
+        }
+
+        return $result->fetch_assoc();
+    }
+}
+
+
+if (!function_exists('empm_get_users')) {
+    /**
+     * Return User data from username
+     *
+     * @return array
+     */
+    function empm_get_users()
+    {
+
+        $conn = empm_get_var('conn');
+        $sql = "SELECT * FROM " . EMPM_TBL_USERS . " WHERE 1";
+        $users = array();
+
+        if (!$result = $conn->query($sql)) {
+            return array();
+        }
+
+        while ($user = $result->fetch_assoc()) {
+            $users[] = $user;
+        }
+
+        return $users;
+    }
+}
+
+
+

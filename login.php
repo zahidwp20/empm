@@ -26,7 +26,7 @@ if ($form_submission === 'yes') :
         header('Location: index.php');
     }
 
-    $errors[] = 'Wrong Username or Password!';
+    $errors[] = 'Invalid information! May be this user has not been activated yet! Please contact Admin/HR';
 
 endif;
 
