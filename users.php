@@ -67,31 +67,39 @@ include 'header.php';
                     </thead>
                     <tbody>
                     <?php foreach (empm_get_users() as $user) : $user_id = empm_get_var('id', $user); ?>
-
-                        <tr>
-                            <td><?php echo $user_id; ?></td>
-                            <td><?php echo empm_get_var('first_name', $user) . empm_get_var('last_name', $user); ?></td>
-                            <td><?php echo empm_get_var('user_name', $user); ?></td>
-                            <td><?php echo empm_get_var('email_address', $user); ?></td>
-                            <td><?php echo ucwords(empm_get_var('user_role', $user)); ?></td>
-                            <td><?php echo ucwords(empm_get_var('status', $user)); ?></td>
-                            <td>
-                                <a href="" class="btn btn-primary btn-sm">View</a>
-
-                                <?php if ($user_id != empm_current_user_id()) : ?>
-                                    <a href="" class="btn btn-success btn-sm">Activate</a>
-                                <?php endif; ?>
-
-                                <a href="" class="btn btn-secondary btn-sm">Edit</a>
-
-                                <?php if ($user_id != empm_current_user_id()) : ?>
-                                    <a href="" class="btn btn-danger btn-sm">Delete</a>
-                                <?php endif; ?>
-                            </td>
+                        <tr data-user-id="<?php echo $user_id; ?>">
+                            <?php echo empm_get_user_row($user_id); ?>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
+
+                <!-- Edit User Modal Window -->
+                <div class="modal fade" id="showEditWindow" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <form action="">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                                    </div>
+                                </form>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </main>
         </div>

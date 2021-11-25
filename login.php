@@ -2,7 +2,6 @@
 
 include 'header.php';
 
-
 $form_submission = isset($_POST['form_submission']) ? $_POST['form_submission'] : '';
 $username = isset($_POST['username']) ? $_POST['username'] : '';
 $password = isset($_POST['password']) ? $_POST['password'] : '';

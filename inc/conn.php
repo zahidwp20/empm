@@ -80,3 +80,4 @@ if (!empm_get_user(EMPM_ADMIN_USERNAME)) {
         $conn->query($sql);
     }
 }
+

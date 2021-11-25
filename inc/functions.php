@@ -6,7 +6,7 @@
 
 if (!function_exists('empm_get_var')) {
     /**
-     * Return var from anywhere
+     * Return var from variable $args
      *
      * @param $key
      * @param $args
@@ -89,16 +89,21 @@ if (!function_exists('empm_current_user_id')) {
 
 if (!function_exists('empm_get_user')) {
     /**
-     * Return User data from username
+     * Return User data from username or user ID
      *
-     * @param $username
+     * @param $username_or_id
      * @return false
      */
-    function empm_get_user($username)
+    function empm_get_user($username_or_id)
     {
 
         $conn = empm_get_var('conn');
-        $sql = "SELECT * FROM " . EMPM_TBL_USERS . " WHERE `user_name` = '$username' LIMIT 1";
+
+        if (is_numeric($username_or_id)) {
+            $sql = "SELECT * FROM " . EMPM_TBL_USERS . " WHERE `id` = '$username_or_id' LIMIT 1";
+        } else {
+            $sql = "SELECT * FROM " . EMPM_TBL_USERS . " WHERE `user_name` = '$username_or_id' LIMIT 1";
+        }
 
         if (!$result = $conn->query($sql)) {
             return false;
@@ -107,7 +112,6 @@ if (!function_exists('empm_get_user')) {
         return $result->fetch_assoc();
     }
 }
-
 
 if (!function_exists('empm_get_users')) {
     /**
@@ -134,5 +138,45 @@ if (!function_exists('empm_get_users')) {
     }
 }
 
+if (!function_exists('empm_get_user_row')) {
+    /**
+     * Return HTML for an user row
+     *
+     * @param $user_id
+     * @return false|string
+     */
+    function empm_get_user_row($user_id)
+    {
+        $user = empm_get_user($user_id);
+        $current_user = empm_get_user(empm_current_user_id());
 
+        ob_start();
+        ?>
+        <td><?php echo $user_id; ?></td>
+        <td><?php echo empm_get_var('first_name', $user) . empm_get_var('last_name', $user); ?></td>
+        <td><?php echo empm_get_var('user_name', $user); ?></td>
+        <td><?php echo empm_get_var('email_address', $user); ?></td>
+        <td><?php echo ucwords(empm_get_var('user_role', $user)); ?></td>
+        <td><?php echo ucwords(empm_get_var('status', $user)); ?></td>
+        <td>
+            <a href="" class="btn btn-primary btn-sm">View</a>
 
+            <?php if ($user_id != empm_current_user_id() && empm_get_var('user_role', $current_user) == 'administrator') : ?>
+
+                <?php if (empm_get_var('status', $user) == 'pending') : ?>
+                    <a href="" class="btn btn-success btn-sm empm-update-user-status" data-status-target="active">Activate</a>
+                    <a href="" class="btn btn-warning btn-sm empm-update-user-status" data-status-target="deactive">Deactivate</a>
+                <?php elseif (empm_get_var('status', $user) == 'active') : ?>
+                    <a href="" class="btn btn-warning btn-sm empm-update-user-status" data-status-target="deactive">Deactivate</a>
+                <?php elseif (empm_get_var('status', $user) == 'deactive') : ?>
+                    <a href="" class="btn btn-success btn-sm empm-update-user-status" data-status-target="active">Activate</a>
+                <?php endif; ?>
+
+            <?php endif; ?>
+
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#showEditWindow">Edit</button>
+        </td>
+        <?php
+        return ob_get_clean();
+    }
+}
