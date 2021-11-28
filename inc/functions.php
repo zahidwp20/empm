@@ -152,7 +152,7 @@ if (!function_exists('empm_get_user_row')) {
 
         ob_start();
         ?>
-        <td><?php echo $user_id; ?></td>
+        <td><?php echo $user_id; ?> <span class="d-none user-name" data-user-name="<?php echo empm_get_var('user_name', $user); ?>"></span></td>
         <td><?php echo empm_get_var('first_name', $user) . empm_get_var('last_name', $user); ?></td>
         <td><?php echo empm_get_var('user_name', $user); ?></td>
         <td><?php echo empm_get_var('email_address', $user); ?></td>
@@ -179,4 +179,12 @@ if (!function_exists('empm_get_user_row')) {
         <?php
         return ob_get_clean();
     }
+}
+
+function empm_is_user_administrator($user_id_user_name = '')
+{
+    $user_id_user_name = empty($user_id_user_name) ? empm_current_user_id() : $user_id_user_name;
+    $user_role = empm_get_var('user_role', empm_get_user($user_id_user_name));
+
+    return $user_role == 'administrator';
 }

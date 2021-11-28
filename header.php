@@ -27,24 +27,56 @@ if (empm_get_var('logout', $_GET) === 'true') {
     header('Location: login.php');
 }
 
-?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.88.1">
-    <title>Employee Management Application</title>
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <meta name="theme-color" content="#7952b3">
+$current_user_id = empm_current_user_id();
+$current_user = empm_get_user($current_user_id);
+$current_user_name = empm_get_var('user_name', $current_user);
 
-    <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/5.1/examples/dashboard/dashboard.css" rel="stylesheet">
-    <link href="assets/css/style.css" rel="stylesheet">
-</head>
+?>
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Hugo 0.88.1">
+        <title>Employee Management Application</title>
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
+        <!-- Bootstrap core CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <meta name="theme-color" content="#7952b3">
+
+        <!-- Custom styles for this template -->
+        <link href="https://getbootstrap.com/docs/5.1/examples/dashboard/dashboard.css" rel="stylesheet">
+        <link href="assets/css/style.css" rel="stylesheet">
+    </head>
 
 <body>
+
+
+<?php if (!in_array('login.php', $curr_script_name) && !in_array('register.php', $curr_script_name)) : ?>
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Employee Management Application</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="dropdown me-3">
+            <a class="btn btn-secondary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <?php echo $current_user_name; ?>
+            </a>
+
+            <ul class="dropdown-menu">
+                <!--                <li><a class="dropdown-item" href="#">Action</a></li>-->
+                <li><a class="nav-link px-3" href="?logout=true">Sign out</a></li>
+            </ul>
+        </div>
+
+        <!--        <div class="navbar-nav">-->
+        <!--            <div class="nav-item text-nowrap">-->
+        <!--                <a href=""></a>-->
+        <!--                <a class="nav-link px-3" href="?logout=true">Sign out</a>-->
+        <!--            </div>-->
+        <!--        </div>-->
+    </header>
+<?php endif; ?>

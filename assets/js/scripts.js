@@ -46,9 +46,9 @@
 
         let thisEditButton = $(e.relatedTarget),
             thisRow = thisEditButton.parent().parent(),
-            userID = thisRow.data('user-id');
+            userName = thisRow.find('.user-name').data('user-name');
 
-        $(e.target).find('#exampleModalLabel').html('Edit User ID: ' + userID);
+        $(e.target).find('#exampleModalLabel').html('Edit User: ' + userName);
     });
 
 })(jQuery)
