@@ -153,7 +153,7 @@ if (!function_exists('empm_get_user_row')) {
         ob_start();
         ?>
         <td><?php echo $user_id; ?> <span class="d-none user-name" data-user-name="<?php echo empm_get_var('user_name', $user); ?>"></span></td>
-        <td><?php echo empm_get_var('first_name', $user) . empm_get_var('last_name', $user); ?></td>
+        <td><?php echo empm_get_var('first_name', $user) . ' ' . empm_get_var('last_name', $user); ?></td>
         <td><?php echo empm_get_var('user_name', $user); ?></td>
         <td><?php echo empm_get_var('email_address', $user); ?></td>
         <td><?php echo ucwords(empm_get_var('user_role', $user)); ?></td>
