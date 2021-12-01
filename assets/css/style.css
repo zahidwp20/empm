@@ -57,4 +57,5 @@ body {
 pre {
     z-index: 9999999999;
     position: relative;
+    background-color: #fff;
 }

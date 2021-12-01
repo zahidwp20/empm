@@ -94,10 +94,11 @@ if (!function_exists('empm_get_user')) {
      * @param $username_or_id
      * @return false
      */
-    function empm_get_user($username_or_id)
+    function empm_get_user($username_or_id = '')
     {
 
         $conn = empm_get_var('conn');
+        $username_or_id = empty( $username_or_id ) ? empm_current_user_id() : $username_or_id;
 
         if (is_numeric($username_or_id)) {
             $sql = "SELECT * FROM " . EMPM_TBL_USERS . " WHERE `id` = '$username_or_id' LIMIT 1";
@@ -152,31 +153,33 @@ if (!function_exists('empm_get_user_row')) {
 
         ob_start();
         ?>
-        <td><?php echo $user_id; ?> <span class="d-none user-name" data-user-name="<?php echo empm_get_var('user_name', $user); ?>"></span></td>
-        <td><?php echo empm_get_var('first_name', $user) . ' ' . empm_get_var('last_name', $user); ?></td>
-        <td><?php echo empm_get_var('user_name', $user); ?></td>
-        <td><?php echo empm_get_var('email_address', $user); ?></td>
-        <td><?php echo ucwords(empm_get_var('user_role', $user)); ?></td>
-        <td><?php echo ucwords(empm_get_var('status', $user)); ?></td>
-        <td>
-            <a href="" class="btn btn-primary btn-sm">View</a>
+<td><?php echo $user_id; ?> <span class="d-none user-name"
+        data-user-name="<?php echo empm_get_var('user_name', $user); ?>"></span></td>
+<td><?php echo empm_get_var('first_name', $user) . ' ' . empm_get_var('last_name', $user); ?></td>
+<td><?php echo empm_get_var('user_name', $user); ?></td>
+<td><?php echo empm_get_var('email_address', $user); ?></td>
+<td><?php echo ucwords(empm_get_var('user_role', $user)); ?></td>
+<td><?php echo ucwords(empm_get_var('status', $user)); ?></td>
+<td>
+    <a href="" class="btn btn-primary btn-sm">View</a>
 
-            <?php if ($user_id != empm_current_user_id() && empm_get_var('user_role', $current_user) == 'administrator') : ?>
+    <?php if ($user_id != empm_current_user_id() && empm_get_var('user_role', $current_user) == 'administrator') : ?>
 
-                <?php if (empm_get_var('status', $user) == 'pending') : ?>
-                    <a href="" class="btn btn-success btn-sm empm-update-user-status" data-status-target="active">Activate</a>
-                    <a href="" class="btn btn-warning btn-sm empm-update-user-status" data-status-target="deactive">Deactivate</a>
-                <?php elseif (empm_get_var('status', $user) == 'active') : ?>
-                    <a href="" class="btn btn-warning btn-sm empm-update-user-status" data-status-target="deactive">Deactivate</a>
-                <?php elseif (empm_get_var('status', $user) == 'deactive') : ?>
-                    <a href="" class="btn btn-success btn-sm empm-update-user-status" data-status-target="active">Activate</a>
-                <?php endif; ?>
+    <?php if (empm_get_var('status', $user) == 'pending') : ?>
+    <a href="" class="btn btn-success btn-sm empm-update-user-status" data-status-target="active">Activate</a>
+    <a href="" class="btn btn-warning btn-sm empm-update-user-status" data-status-target="deactive">Deactivate</a>
+    <?php elseif (empm_get_var('status', $user) == 'active') : ?>
+    <a href="" class="btn btn-warning btn-sm empm-update-user-status" data-status-target="deactive">Deactivate</a>
+    <?php elseif (empm_get_var('status', $user) == 'deactive') : ?>
+    <a href="" class="btn btn-success btn-sm empm-update-user-status" data-status-target="active">Activate</a>
+    <?php endif; ?>
 
-            <?php endif; ?>
+    <?php endif; ?>
 
-            <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#showEditWindow">Edit</button>
-        </td>
-        <?php
+    <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+        data-bs-target="#showEditWindow">Edit</button>
+</td>
+<?php
         return ob_get_clean();
     }
 }
@@ -187,4 +190,49 @@ function empm_is_user_administrator($user_id_user_name = '')
     $user_role = empm_get_var('user_role', empm_get_user($user_id_user_name));
 
     return $user_role == 'administrator';
+}
+
+
+
+if( ! function_exists('empm_update_user')) {
+    /**
+     * Update user data 
+     * 
+     * @param $args array
+     * 
+     * @return bool
+     */
+    function empm_update_user($args = array()) {
+        
+        $conn = empm_get_var('conn');
+        $user_id = empm_get_var('id', $args);
+        $password = empm_get_var('password', $args);
+        $password = empm_get_var('password', $args);
+        $confirm_password = empm_get_var('confirm_password', $args);
+        
+        if( empty($user_id ) ) {
+            return false;
+        }
+
+        if( empty($password) ||  $password != $confirm_password ) {
+            unset( $args['password'] );
+        }
+
+        // Remove user ID and form_submission confirm_password from update
+        unset( $args['id'] );
+        unset( $args['form_submission'] );
+        unset( $args['confirm_password'] );
+
+        $new_args = array_map( function( $value, $key ){
+            return "{$key} = '{$value}'";
+        }, $args, array_keys( $args ));
+
+        $sql = "UPDATE " . EMPM_TBL_USERS . " SET " . implode(',', $new_args) ." WHERE id = $user_id";
+
+        if (!$conn->query($sql)) {
+            return false;
+        }
+
+        return true;
+    } 
 }

@@ -84,6 +84,10 @@
         });
     });
 
+    $(document).on('hide.bs.modal', function() {
+        $('form.modal-user-update').trigger('reset');
+    });
+
 
     $(document).on('submit', 'form.modal-user-update', function () {
 
@@ -117,6 +121,8 @@
 
         return false;
     });
+
+
 
 
 })(jQuery)

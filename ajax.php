@@ -55,36 +55,15 @@ if( $action == 'empm_get_user_details' ) {
 // Update user data 
 if( $action == 'empm_update_user_details' ) {
 
-    $response = array();
     $conn = empm_get_var('conn');
     $_form_data = empm_get_var('form_data', $_POST);
     
     parse_str( $_form_data, $form_data );
 
-    $user_id = empm_get_var('id', $form_data);
+    $user_id = empm_get_var('id', $args);
+    $response = empm_update_user($form_data);
 
-    $sql = "UPDATE " . EMPM_TBL_USERS . " 
-            SET 
-                first_name = '" . empm_get_var('first_name', $form_data) . "',
-                last_name = '" . empm_get_var('last_name', $form_data) . "',
-                phone_number = '" . empm_get_var('phone_number', $form_data) . "',
-                designation = '" . empm_get_var('designation', $form_data) . "',
-                street_address = '" . empm_get_var('street_address', $form_data) . "',
-                city = '" . empm_get_var('city', $form_data) . "',
-                zipcode = '" . empm_get_var('zipcode', $form_data) . "',
-                country = '" . empm_get_var('country', $form_data) . "',
-                gender = '" . empm_get_var('gender', $form_data) . "',
-                religion = '" . empm_get_var('religion', $form_data) . "',
-                salary = '" . empm_get_var('salary', $form_data) . "'
-            WHERE id = $user_id";
-
-    if (!$conn->query($sql)) {
-        $response['status'] = false;
-        $response['message'] = $conn->error;
-        die();
-    }
-
-    $response['status'] = true;
+    $response['status'] = $response;
     $response['message'] = empm_get_user_row($user_id);
     $response['user_id'] = $user_id;
 

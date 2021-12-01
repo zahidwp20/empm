@@ -104,7 +104,7 @@ include 'header.php';
 
                                         <div class="mb-3">
                                             <label for="Salary" class="form-label salary">Salary (BDT)</label>
-                                            <input type="number" name="salary" class="form-control" id="Salary"
+                                            <input type="number" name="salary" class="form-control salary" id="Salary"
                                                 placeholder="25000">
                                         </div>
 
