@@ -5,6 +5,7 @@
 
 session_start();
 
+date_default_timezone_set('Asia/Dhaka');
 const EMPM_DB_NAME = 'empm_db';
 const EMPM_TBL_USERS = 'empm_users';
 const EMPM_TBL_OPTIONS = 'empm_options';

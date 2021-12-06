@@ -6,7 +6,6 @@
         'aria-hidden': 'true'
     });
 
-
     $(document).on('click', '.empm-update-user-status', function () {
 
         let thisButton = $(this),
@@ -43,13 +42,14 @@
         return false;
     });
 
-
     $(document).on('show.bs.modal', function (e) {
 
-        let thisEditButton = $(e.relatedTarget),
-            thisRow = thisEditButton.parent().parent(),
+        let thisButton = $(e.relatedTarget),
+            thisRow = thisButton.parent().parent(),
             userName = thisRow.find('.user-name').data('user-name'),
-            modalForm = $('form.modal-user-update');
+            modalForm = $('form.modal-user-update'),
+            viewModalForm = $('#showViewWindow');
+
 
         $(e.target).find('#exampleModalLabel').html('Edit User: ' + userName);
 
@@ -67,27 +67,36 @@
 
                 if (response.status) {
 
-                    $.each(response.message, function (key, value) {
+                    // For View
+                    if (thisButton.hasClass('view-user-data')) {
+                        $.each(response.message, function (key, value) {
+                            viewModalForm.find('.' + key).html(value);
+                        });
+                    }
 
-                        let thisField = modalForm.find('.' + key),
-                            thisFieldTag = thisField.prop("tagName"),
-                            thisFieldType = thisField.attr('type');
+                    // For Edit
+                    if (thisButton.hasClass('edit-user-data')) {
+                        $.each(response.message, function (key, value) {
 
-                        if (thisFieldTag == 'INPUT' && thisFieldType == 'radio') {
-                            modalForm.find('input[value="' + value + '"].' + key).prop("checked", true);
-                        } else {
-                            thisField.val(value);
-                        }
-                    });
+                            let thisField = modalForm.find('.' + key),
+                                thisFieldTag = thisField.prop("tagName"),
+                                thisFieldType = thisField.attr('type');
+
+                            if (thisFieldTag == 'INPUT' && thisFieldType == 'radio') {
+                                modalForm.find('input[value="' + value + '"].' + key).prop("checked", true);
+                            } else {
+                                thisField.val(value);
+                            }
+                        });
+                    }
                 }
             }
         });
     });
 
-    $(document).on('hide.bs.modal', function() {
+    $(document).on('hide.bs.modal', function () {
         $('form.modal-user-update').trigger('reset');
     });
-
 
     $(document).on('submit', 'form.modal-user-update', function () {
 
@@ -121,8 +130,4 @@
 
         return false;
     });
-
-
-
-
 })(jQuery)

@@ -30,13 +30,13 @@ if ($action == 'empm_update_user_status') {
 }
 
 
-if( $action == 'empm_get_user_details' ) {
+if ($action == 'empm_get_user_details') {
 
     $response = array();
     $user_name = empm_get_var('user_name', $_POST);
     $user_data = empm_get_user($user_name);
 
-    if( ! $user_data ) {
+    if (!$user_data) {
         $response = array(
             'status' => false,
             'message' => 'User data not found!',
@@ -48,22 +48,21 @@ if( $action == 'empm_get_user_details' ) {
         'message' => $user_data,
     );
 
-    echo json_encode( $response );
+    echo json_encode($response);
     die();
 }
 
 // Update user data 
-if( $action == 'empm_update_user_details' ) {
+if ($action == 'empm_update_user_details') {
 
     $conn = empm_get_var('conn');
     $_form_data = empm_get_var('form_data', $_POST);
-    
-    parse_str( $_form_data, $form_data );
 
-    $user_id = empm_get_var('id', $args);
-    $response = empm_update_user($form_data);
+    parse_str($_form_data, $form_data);
 
-    $response['status'] = $response;
+    $user_id = empm_get_var('id', $form_data);
+
+    $response['status'] = empm_update_user($form_data);
     $response['message'] = empm_get_user_row($user_id);
     $response['user_id'] = $user_id;
 

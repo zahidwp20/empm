@@ -20,7 +20,7 @@ if ($form_submission === 'yes') :
     if (empty($errors) && $user_id = empm_check_user_login($username, $password)) {
 
         // User logged in and store data in cookie
-        setcookie('user_logged_in', $user_id);
+        setcookie('user_logged_in', $user_id, time() + (60 * 60 * 24));
 
         header('Location: index.php');
     }
@@ -48,11 +48,13 @@ if (empm_current_user_id()) {
         <?php endforeach; endif; ?>
 
         <div class="form-floating mb-3">
-            <input type="text" name="username" class="form-control" id="username" placeholder="john" value="<?php echo $username; ?>">
+            <input type="text" name="username" class="form-control" id="username" placeholder="john"
+                   value="<?php echo $username; ?>">
             <label for="username">Username</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" value="<?php echo $password; ?>">
+            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password"
+                   value="<?php echo $password; ?>">
             <label for="floatingPassword">Password</label>
         </div>
         <input type="hidden" name="form_submission" value="yes">
