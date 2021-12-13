@@ -2,7 +2,7 @@
 <project version="4">
   <component name="PhpIncludePathManager">
     <include_path>
-      <path value="$PROJECT_DIR$/../../WordPress Projects/wpriders" />
+      <path value="$PROJECT_DIR$/../../Client Projects/clippingsolution" />
     </include_path>
   </component>
 </project>

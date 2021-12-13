@@ -6,6 +6,17 @@
         'aria-hidden': 'true'
     });
 
+
+    $(document).ready(function () {
+
+        let allSelect2 = $('.select2');
+
+        if (allSelect2.length > 0) {
+            allSelect2.select2();
+        }
+    });
+
+
     $(document).on('click', '.empm-update-user-status', function () {
 
         let thisButton = $(this),

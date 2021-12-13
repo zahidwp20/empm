@@ -29,7 +29,6 @@ if ($action == 'empm_update_user_status') {
     die();
 }
 
-
 if ($action == 'empm_get_user_details') {
 
     $response = array();

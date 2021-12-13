@@ -48,6 +48,7 @@ $current_user_name = empm_get_var('user_name', $current_user);
 
         <!-- Custom styles for this template -->
         <link href="https://getbootstrap.com/docs/5.1/examples/dashboard/dashboard.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
         <link href="assets/css/style.css" rel="stylesheet">
     </head>
 
@@ -56,7 +57,7 @@ $current_user_name = empm_get_var('user_name', $current_user);
 
 <?php if (!in_array('login.php', $curr_script_name) && !in_array('register.php', $curr_script_name)) : ?>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Employee Management Application</a>
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#"><?php echo empm_get_option('project_name'); ?></a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
