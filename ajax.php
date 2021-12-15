@@ -68,3 +68,51 @@ if ($action == 'empm_update_user_details') {
     echo json_encode($response);
     die();
 }
+
+// Search users
+//if ($action == 'empm_search_users') {
+//
+//    $conn = empm_get_var('conn');
+//    $search_keyword = empm_get_var('s', $_POST);
+//
+//    $sql_search = "SELECT * FROM " . EMPM_TBL_USERS . "
+//                    WHERE
+//                        `first_name` LIKE '%$search_keyword%' OR
+//                        `last_name` LIKE '%$search_keyword%' OR
+//                        `email_address` LIKE '%$search_keyword%' OR
+//                        `user_name` LIKE '%$search_keyword%'";
+//    $users = array();
+//
+//    if (!$result = $conn->query($sql_search)) {
+//        echo json_encode(array());
+//        die();
+//    }
+//
+//    while ($user = $result->fetch_assoc()) {
+//        $user_id = empm_get_var('id', $user);
+//        $users[] = sprintf('<tr data-user-id="%s">%s</tr>', $user_id, empm_get_user_row($user_id));
+//    }
+//
+//    echo json_encode(array(
+//        'status' => true,
+//        'message' => implode(' ', $users),
+//    ));
+//    die();
+//}
+
+if ($action == 'empm_search_users') {
+
+    $search_keyword = empm_get_var('s', $_POST);
+    $users = array();
+
+    foreach (empm_get_users(array('s' => $search_keyword)) as $user) {
+        $user_id = empm_get_var('id', $user);
+        $users[] = sprintf('<tr data-user-id="%s">%s</tr>', $user_id, empm_get_user_row($user_id));
+    }
+
+    echo json_encode(array(
+        'status' => true,
+        'message' => implode(' ', $users),
+    ));
+    die();
+}

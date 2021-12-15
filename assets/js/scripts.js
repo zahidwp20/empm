@@ -17,6 +17,35 @@
     });
 
 
+    /**
+     * aJax search
+     */
+    $(document).on('input', '#searchField', function () {
+
+        let thisSearchField = $(this),
+            thisSearchValue = thisSearchField.val(),
+            usersTable = $('.table-users');
+
+        $.ajax({
+            url: 'ajax.php',
+            type: 'post',
+            context: this,
+            data: {
+                action: 'empm_search_users',
+                s: thisSearchValue,
+            },
+            success: function (result) {
+
+                let response = JSON.parse(result);
+
+                if (response.status) {
+                    usersTable.find('tbody').html(response.message);
+                }
+            }
+        });
+    });
+
+
     $(document).on('click', '.empm-update-user-status', function () {
 
         let thisButton = $(this),

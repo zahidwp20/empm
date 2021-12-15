@@ -122,14 +122,24 @@ if (!function_exists('empm_get_users')) {
      *
      * @return array
      */
-    function empm_get_users()
+    function empm_get_users($args = array())
     {
-
         $conn = empm_get_var('conn');
-        $sql = "SELECT * FROM " . EMPM_TBL_USERS . " WHERE 1";
+        $sql = "SELECT * FROM " . EMPM_TBL_USERS;
+        $where_clause = '1';
         $users = array();
 
-        if (!$result = $conn->query($sql)) {
+        // Check search string
+        if (!empty($search_string = empm_get_var('s', $args))) {
+            $where_clause = implode(' OR ', array(
+                "`first_name` LIKE '%$search_string%'",
+                "`last_name` LIKE '%$search_string%'",
+                "`email_address` LIKE '%$search_string%'",
+                "`user_name` LIKE '%$search_string%'",
+            ));
+        }
+
+        if (!$result = $conn->query($sql . ' WHERE ' . $where_clause)) {
             return array();
         }
 
