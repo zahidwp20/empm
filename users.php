@@ -42,6 +42,24 @@ include 'header.php';
                         </tbody>
                     </table>
 
+
+                    <?php
+                    $conn = empm_get_var('conn');
+                    $this_page_num = empm_get_var('page', $_GET);
+                    $this_page_num = empty($this_page_num) ? 1 : $this_page_num;
+
+                    $result = $conn->query("SELECT count(*) FROM " . EMPM_TBL_USERS);
+                    $result = $result->fetch_assoc();
+                    $limit = empm_get_option('items_per_page');
+                    $item_count = reset($result);
+
+                    ?>
+                    <div class="empm-pagination">
+                        <a class="btn btn-primary <?php echo $this_page_num > 1 && $this_page_num <= ceil($item_count / $limit) ? '' : 'disabled'; ?>" href="<?php echo empm_get_current_page_url(array('page' => $this_page_num - 1)) ?>" role="button">Prev</a>
+                        <a href="" class="btn btn-outline-secondary disabled"><?php echo $this_page_num; ?></a>
+                        <a class="btn btn-primary <?php echo $this_page_num < ($item_count / $limit) ? '' : 'disabled'; ?>" href="<?php echo empm_get_current_page_url(array('page' => $this_page_num + 1)) ?>" role="button">Next</a>
+                    </div>
+
                     <!-- Edit User Modal Window -->
                     <div class="modal fade" id="showEditWindow" tabindex="-1" aria-labelledby="exampleModalLabel"
                          aria-hidden="true">

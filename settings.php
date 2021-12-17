@@ -11,9 +11,11 @@ if ($form_submission === 'yes') :
 
     $_project_name = isset($_POST['project_name']) ? $_POST['project_name'] : '';
     $_timezone = isset($_POST['timezone']) ? $_POST['timezone'] : '';
+    $_items_per_page = isset($_POST['items_per_page']) ? $_POST['items_per_page'] : '';
 
     empm_update_option('project_name', $_project_name);
     empm_update_option('timezone', $_timezone);
+    empm_update_option('items_per_page', $_items_per_page);
 
     header('Location: settings.php');
     exit();
@@ -23,7 +25,7 @@ endif;
 
 $project_name = empm_get_option('project_name');
 $timezone = empm_get_option('timezone');
-
+$items_per_page = empm_get_option('items_per_page');
 
 ?>
 
@@ -61,6 +63,16 @@ $timezone = empm_get_option('timezone');
 
                                         <?php endforeach; ?>
                                     </select>
+                                </div>
+                            </div>
+
+
+                            <div class="mb-3 d-flex ">
+                                <div class="col-md-3">
+                                    <h5><label for="itemsPerPage">Items per Page</label></h5>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" value="<?php echo $items_per_page; ?>" class="form-control" name="items_per_page" placeholder="5" id="itemsPerPage">
                                 </div>
                             </div>
 

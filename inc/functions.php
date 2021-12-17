@@ -125,8 +125,16 @@ if (!function_exists('empm_get_users')) {
     function empm_get_users($args = array())
     {
         $conn = empm_get_var('conn');
+        $page = empm_get_var('page', $_GET);
+        $page = !empty($page) && is_numeric($page) ? $page : 1;
         $sql = "SELECT * FROM " . EMPM_TBL_USERS;
-        $where_clause = '1';
+
+
+        $limit = empm_get_option('items_per_page');
+        $offset = ($page - 1) * $limit;
+        $where_clause = "1 LIMIT $limit OFFSET $offset";
+
+
         $users = array();
 
         // Check search string
@@ -142,6 +150,7 @@ if (!function_exists('empm_get_users')) {
         if (!$result = $conn->query($sql . ' WHERE ' . $where_clause)) {
             return array();
         }
+
 
         while ($user = $result->fetch_assoc()) {
             $users[] = $user;
@@ -740,3 +749,33 @@ function empm_get_timezones()
         'Pacific/Kiritimati' => '(UTC+14:00) Kiritimati',
     );
 }
+
+
+if (!function_exists('empm_get_current_page_url')) {
+    /**
+     * Return current page URL
+     *
+     * @return string
+     */
+    function empm_get_current_page_url($args)
+    {
+        $url_args = array(
+            $_SERVER['REQUEST_SCHEME'],
+            '://',
+            $_SERVER['SERVER_NAME'],
+            $_SERVER['SCRIPT_NAME']
+        );
+
+        $url = implode('', $url_args);
+
+        if (is_array($args) && !empty($args)) {
+            $url .= '?' . http_build_query($args);
+        }
+
+        return $url;
+    }
+}
+
+
+
+
